@@ -8,8 +8,8 @@ const jokeCreateDtoInType = shape({
   const jokeGetDtoInType = shape({
     id: id().isRequired()
   })
-  
-  const jokeGetImageDataDtoInType = shape ({
+
+  const jokeGetImageDataDtoInType = shape({
     image: code().isRequired(),
     contentDisposition: oneOf(["inline", "attachment"])
   });
