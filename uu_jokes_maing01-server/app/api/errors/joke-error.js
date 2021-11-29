@@ -70,13 +70,43 @@ const Get = {
       this.message = "Joke doesn't exist"
 
     }
+    
+    
+  },
+  
+  JokeImageDaoCreateFailed: class extends JokesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${Create.UC_CODE}jokeImageDaoCreateFailed`;
+      this.message = "Create of jokeImage by jokeImage Dao create failed.";
+    }
   }
 
 
 
 }
 
+const GetImageData = {
+  UC_CODE: `${JOKE_ERROR_PREFIX}getImageData/`,
+
+  InvalidDtoIn: class extends JokesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetImageData.UC_CODE}invalidDtoIn`;
+      this.message = "DtoIn is not valid.";
+    }
+  },
+  JokeImageDoesNotExist: class extends JokesMainUseCaseError {
+    constructor() {
+      super(...arguments);
+      this.code = `${GetImageData.UC_CODE}jokeImageDoesNotExist`;
+      this.message = "Object jokeImage does not exist.";
+    }
+  }
+};
+
 module.exports = {
   Create,
-  Get
+  Get,
+  GetImageData
 };

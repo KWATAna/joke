@@ -7,11 +7,16 @@ const { UriBuilder } = require("uu_appg01_server").Uri;
 const { LoggerFactory } = require("uu_appg01_server").Logging;
 const { AppClient } = require("uu_appg01_server");
 const Errors = require("../api/errors/joke-error.js");
+const {BinaryStoreError} = require("uu_appg01_binarystore");
 
 const WARNINGS = {
   createUnsupportedKeys: {
     code: `${Errors.Create.UC_CODE}unsupportedKeys`,
   },
+  getImageDataUnsupportedKeys: {
+    code: `${Errors.GetImageData.UC_CODE}unsupportedKeys`
+  }
+  
 };
 
 const expectedStateList = ["active", "underConstruction"]
@@ -21,6 +26,7 @@ class JokeAbl {
     this.validator = Validator.load();
     this.mainDao = DaoFactory.getDao("jokesMain");
     this.jokeDao = DaoFactory.getDao("joke");
+    this.jokeImageDao = DaoFactory.getDao("jokeImage")
   }
   
   async create(uri, dtoIn, session, uuAppErrorMap = {}) {
@@ -46,7 +52,19 @@ class JokeAbl {
       WARNINGS.createUnsupportedKeys.code,
       Errors.Create.InvalidDtoIn
     );
-
+      // HDS 2 - to test 
+      let jokeImage;
+    if (dtoIn.image) {
+      try {
+        jokeImage = await this.jokeImageDao.create({awid}, dtoIn.image);
+      } catch (e) {
+        if (e instanceof BinaryStoreError) { // A3
+          throw new Errors.Create.JokeImageDaoCreateFailed({uuAppErrorMap}, e);
+        }
+        throw e;
+      }
+      dtoIn.image = jokeImage.code;
+    }
     // HDS 3
     
 
@@ -124,6 +142,31 @@ class JokeAbl {
       }
 
 
+  }
+  
+  async getImageData(awid, dtoIn) {
+    // hds 1
+    // hds 1.1
+    console.log(`${dtoIn} MISTAAAAAAAAAAAAAKE`)
+    let validationResult = this.validator.validate("jokeGetImageDataDtoInType", dtoIn);
+    // hds 1.2, 1.3 // A1, A2
+    let uuAppErrorMap = ValidationHelper.processValidationResult(dtoIn, validationResult,
+      WARNINGS.getImageDataUnsupportedKeys.code, Errors.GetImageData.InvalidDtoIn);
+
+    // hds 2
+    let dtoOut;
+    try {
+      dtoOut = await this.jokeImageDao.getDataByCode(awid, dtoIn.image);
+    } catch (e) {
+      if (e.code === "uu-app-binarystore/objectNotFound") { // A3
+        throw new Errors.GetImageData.JokeImageDoesNotExist({uuAppErrorMap}, {image: dtoIn.image});
+      }
+      throw e;
+    }
+
+    // hds 3
+    dtoOut.uuAppErrorMap = uuAppErrorMap;
+    return dtoOut;
   }
  
 

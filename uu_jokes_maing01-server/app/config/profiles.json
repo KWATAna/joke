@@ -25,6 +25,10 @@
       "joke/get":{
         "sysStateList": ["active"],
         "profileList": ["Authorities"]
+      },
+      "joke/getImageData":{
+        "sysStateList": ["active"],
+        "profileList": ["Authorities"]
       }      
     }
   }
