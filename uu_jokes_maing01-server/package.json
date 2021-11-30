@@ -10,6 +10,7 @@
     "uu_appg01_binarystore": "^3.0.1"
   },
   "devDependencies": {
+    "mongodb": "^3.6.0",
     "uu_appg01_devkit": "^4.6.0",
     "uu_appg01_server-test": "^5.0.0"
   },

@@ -7,9 +7,13 @@
   "*": {
     "profileList": ["Authorities", "Executives", "AwidLicenseOwner", "Public"],
     "useCaseMap": {
-      "sys/uuAppWorkspace/init": {
+      "sys/uuSubAppInstance/init": {
         "sysStateList": ["active"],
-        "profileList": ["Authorities"]
+        "profileList": ["AwidLicenseOwner"]
+      },
+      "sys/uuAppWorkspace/init": {
+        "sysStateList": ["created"],
+        "profileList": ["AwidLicenseOwner"]
       },
       "defaultUve": {
         "profileList": ["Public"]

@@ -40,7 +40,7 @@ class JokeAbl {
     }
 
     if (uuJokeMain.state !== 'underConstruction') {
-      throw new Errors.Create.jokesIsNotInCorrectState({uuAppErrorMap}, {expectedStateList, actualState: uuJokeMain.state})
+      throw new Errors.Create.jokesIsNotInCorrectState({uuAppErrorMap}, {expectedState: "active", awid })
     }
 
     // HDS 2 - Validation of dtoIn.
