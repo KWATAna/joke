@@ -9,6 +9,7 @@ import Config from "./config/config";
 import Left from "./left";
 import Bottom from "./bottom";
 import Home from "../routes/home";
+
 //@@viewOff:imports
 
 const STATICS = {
