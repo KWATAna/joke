@@ -49,31 +49,12 @@ export const Home = createVisualComponent({
   //@@viewOn:defaultProps
   //@@viewOff:defaultProps
 
-  render(props) {
-    //@@viewOn:private
-    //@@viewOff:private
-
-    //@@viewOn:interface
-    //@@viewOff:interface
-
-    //@@viewOn:render
-    const attrs = UU5.Common.VisualComponent.getAttrs(props);
-    return (
-      <div>
-      <JokeProvider>
-        {({ jokes, handleCreate, handleDelete }) => {
-          return (
-            <>
-              <JokeCreate onCreate={handleCreate} />
-              <JokeList jokes={jokes} onDelete={handleDelete} />
-            </>
-          );
-        }}
-      </JokeProvider>
-    </div>
-    );
-    //@@viewOff:render
-  },
+  //@@viewOn:render
+render() {
+  return <div>Welcome in uuJokes</div>;
+}
+//@@viewOff:render
+  
 });
 
 export default Home;

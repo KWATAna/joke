@@ -4,11 +4,14 @@ import "uu5g04-bricks";
 import { createVisualComponent, useState } from "uu5g04-hooks";
 import Plus4U5 from "uu_plus4u5g01";
 import "uu_plus4u5g01-app";
+import Jokes from "../routes/jokes";
 
 import Config from "./config/config";
 import Left from "./left";
 import Bottom from "./bottom";
 import Home from "../routes/home";
+import Some from "../routes/some";
+
 
 //@@viewOff:imports
 
@@ -27,6 +30,9 @@ const ROUTES = {
   "": DEFAULT_USE_CASE,
   home: { component: <Home /> },
   about: { component: <About /> },
+  jokes: { component: <Jokes /> },
+  some: { component: <Some/>}, // Add this line
+
   "sys/uuAppWorkspace/initUve": { component: <InitAppWorkspace /> },
   controlPanel: { component: <ControlPanel /> },
 };
