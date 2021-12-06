@@ -26,13 +26,15 @@ const JokeCreateForm = createVisualComponent({
 
   render({ onSave, onCancel }) {
     //@@viewOn:render
-    return (
-      <UU5.Forms.Form onSave={onSave} onCancel={onCancel}>
-        <UU5.Forms.Text label="Title" name="name" />
-        <UU5.Forms.Text label="Text" name="text" />
-        <UU5.Forms.Controls />
-      </UU5.Forms.Form>
-    );
+ //@@viewOn:render
+return (
+  <UU5.Forms.Form onSave={onSave} onCancel={onCancel} labelColWidth="xs-12 m-1" inputColWidth="xs-12 m-11">
+    <UU5.Forms.Text label="Title" name="name" />
+    <UU5.Forms.Text label="Text" name="text" />
+    <UU5.Forms.Controls />
+  </UU5.Forms.Form>
+);
+//@@viewOff:render
     //@@viewOff:render
   }
 });
