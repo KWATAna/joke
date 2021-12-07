@@ -7,7 +7,7 @@ import JokeCreateForm from "./joke-create-form";
 
 const Mode = {
   BUTTON: "BUTTON",
-  FORM: "FORM"
+  FORM: "FORM",
 };
 
 const JokeCreate = createComponent({
@@ -17,13 +17,13 @@ const JokeCreate = createComponent({
 
   //@@viewOn:propTypes
   propTypes: {
-    onCreate: UU5.PropTypes.func
+    onCreate: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
   //@@viewOn:defaultProps
   defaultProps: {
-    onCreate: () => {}
+    onCreate: () => {},
   },
   //@@viewOff:defaultProps
 
@@ -63,7 +63,7 @@ const JokeCreate = createComponent({
         return renderForm();
     }
     //@@viewOff:render
-  }
+  },
 });
 
 export default JokeCreate;

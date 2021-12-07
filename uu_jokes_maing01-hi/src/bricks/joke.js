@@ -1,9 +1,11 @@
 //@@viewOn:imports
 import UU5 from "uu5g04";
+import { createVisualComponent, useContext, useSession } from "uu5g04-hooks";
 import Calls from "calls";
-import { createVisualComponent } from "uu5g04-hooks";
 import Config from "./config/config";
 import Css from "./joke.css.js";
+import JokesInstanceContext from "./jokes-instance-context";
+
 //@@viewOff:imports
 
 const Joke = createVisualComponent({
@@ -16,12 +18,12 @@ const Joke = createVisualComponent({
     joke: UU5.PropTypes.shape({
       name: UU5.PropTypes.string.isRequired,
       text: UU5.PropTypes.string,
-      averageRating: UU5.PropTypes.number.isRequired
+      averageRating: UU5.PropTypes.number.isRequired,
     }),
     colorSchema: UU5.PropTypes.string,
     onDetail: UU5.PropTypes.func,
     onUpdate: UU5.PropTypes.func,
-    onDelete: UU5.PropTypes.func
+    onDelete: UU5.PropTypes.func,
   },
   //@@viewOff:propTypes
 
@@ -31,11 +33,20 @@ const Joke = createVisualComponent({
     colorSchema: "blue",
     onDetail: () => {},
     onUpdate: () => {},
-    onDelete: () => {}
+    onDelete: () => {},
   },
   //@@viewOff:defaultProps
 
   render({ joke, colorSchema, onDetail, onUpdate, onDelete }) {
+    //@@viewOn:hooks
+    const {
+      data: { authorizedProfileList },
+    } = useContext(JokesInstanceContext);
+
+    const { identity } = useSession();
+
+    //@@viewOff:hooks
+
     //@@viewOn:private
     function handleDetail() {
       onDetail(joke);
@@ -47,6 +58,12 @@ const Joke = createVisualComponent({
 
     function handleDelete() {
       onDelete(joke);
+    }
+    function canManage() {
+      const isAuthority = authorizedProfileList.some((profile) => profile === Config.Profiles.AUTHORITIES);
+      const isExecutive = authorizedProfileList.some((profile) => profile === Config.Profiles.EXECUTIVES);
+      const isOwner = identity.uuIdentity === joke.uuIdentity;
+      return isAuthority || (isExecutive && isOwner);
     }
     //@@viewOff:private
 
@@ -74,19 +91,21 @@ const Joke = createVisualComponent({
         </div>
         <div className={Css.footer()}>
           <UU5.Bricks.Rating value={joke.averageRating} />
-          <div>
-            <UU5.Bricks.Button onClick={handleUpdate} bgStyle="transparent">
-              <UU5.Bricks.Icon icon="mdi-pencil" />
-            </UU5.Bricks.Button>
-            <UU5.Bricks.Button onClick={handleDelete} bgStyle="transparent">
-              <UU5.Bricks.Icon icon="mdi-delete" />
-            </UU5.Bricks.Button>
-          </div>
+          {canManage() && (
+            <UU5.Bricks.Div>
+              <UU5.Bricks.Button onClick={handleUpdate} bgStyle="transparent">
+                <UU5.Bricks.Icon icon="mdi-pencil" />
+              </UU5.Bricks.Button>
+              <UU5.Bricks.Button onClick={handleDelete} bgStyle="transparent">
+                <UU5.Bricks.Icon icon="mdi-delete" />
+              </UU5.Bricks.Button>
+            </UU5.Bricks.Div>
+          )}
         </div>
       </UU5.Bricks.Card>
     );
     //@@viewOff:render
-  }
+  },
 });
 
 export default Joke;
